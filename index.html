@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Weather Assistant</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --brand-bg: #1b5e20;
+      --brand-accent: #66bb6a;
+      --brand-text: #e8f5e9;
+    }
+
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--brand-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--brand-text);
+      font-size: 2em;
+      z-index: 9999;
+      flex-direction: column;
+      animation: fadeOut 2s ease forwards;
+      animation-delay: 3.8s;
+    }
+
+    .intro-screen h1 {
+      margin: 0;
+      font-size: 2.2em;
+      animation: type 2.5s steps(30, end);
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid var(--brand-accent);
+    }
+
+    .spinner {
+      margin: 20px 0;
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top: 6px solid var(--brand-accent);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes type {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  #forecastChart {
+  background-color: #e2ede3; /* Dark green background */
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  display: block;
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+</style>
+</head>
+<body>
+  <div class="intro-screen" id="intro">
+    <img src="logo.png" alt="Weather Bot Logo" width="80" height="80" style="margin-bottom: 10px;" />
+    <h1>👋 Hello! Welcome to the Weather Chatbot</h1>
+    <div class="spinner"></div>
+    <p>Loading your assistant...</p>
+  </div>
+
+  <header>
+    🌍 <span id="app-title">Advanced Weather Assistant</span>
+    <select id="lang-select">
+      <option value="en">🇬🇧 English</option>
+      <option value="hi">🇮🇳 हिंदी</option>
+      <option value="mr">🇮🇳 मराठी</option>
+    </select>
+  </header>
+  <main>
+    <div class="chatbox">
+      <div class="chatbox-header" id="chat-header">Ask for weather: City, GPS or Voice 🎙️</div>
+      <div class="chatbox-messages" id="messages">
+        <p class="bot" id="welcome-msg">👋 Say or type a city name, or allow GPS access to get your 7-day forecast.</p>
+      </div>
+      <div class="chatbox-input">
+        <input type="text" id="input" placeholder="e.g. New York or allow GPS..." />
+        <button onclick="requestLocationForecast()">📍 Use My Location</button>
+        <button id="sendBtn">Send</button>
+        <button id="micBtn">🎤</button>
+      </div>
+    </div>
+    <canvas id="forecastChart"></canvas>
+  </main>
+  <footer>&copy; 2025 <span id="footer-text">Advanced Weather Assistant</span> | Offline Ready ✅</footer>
+
+  <audio id="intro-audio" src="welcome.mp3" preload="auto"></audio>
+
+  <script>
+    window.addEventListener('load', () => {
+      const audio = document.getElementById('intro-audio');
+      audio.play().catch(() => {});
+      setTimeout(() => {
+        document.getElementById('intro').style.display = 'none';
+      }, 3800);
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
